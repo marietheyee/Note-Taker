@@ -1,19 +1,17 @@
 const express = require('express');
-//use express
+const apiRoutes = require('./routes/apiRoutes');
+const htmlRoutes = require('./routes/htmlRoutes');
+
 const app = express();
-//set up PORT
-const PORT = process.env.PORT || 3001
 
-//asking express to create route for files under 'public'
-app.use(express.static('public'));
-app.use(express.urlencoded({ extended: true }));
+const PORT = process.env.PORT || 3001;
+
+app.use(express.urlencoded({ extended: true}));
 app.use(express.json());
+app.use(express.static('public'));
+app.use('/api', apiRoutes);
+app.use('/', htmlRoutes);
 
-//api route and html route
-require('./routes/apiRoutes')(app);
-require('./routes/htmlRoutes')(app)
-
-//app listener
 app.listen(PORT, () => {
-    console.log(`Server available at localhost${PORT}`);
-})
+    console.log(`Now listening on PORT: ${PORT}`);
+});
